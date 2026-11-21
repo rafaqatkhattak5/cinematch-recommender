@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CineMatch AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#0b0618;color:#fff;min-height:100vh;overflow-x:hidden}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;z-index:-1;animation:float 14s ease-in-out infinite alternate}
+.b1{width:420px;height:420px;background:#7c3aed;top:-120px;left:-120px}
+.b2{width:380px;height:380px;background:#ec4899;top:30%;right:-140px;animation-delay:-5s}
+.b3{width:420px;height:420px;background:#06b6d4;bottom:-140px;left:20%;animation-delay:-9s}
+@keyframes float{to{transform:translate(70px,50px) scale(1.2)}}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:clamp(2rem,7vw,3.4rem);font-weight:800;text-align:center;
+background:linear-gradient(90deg,#a78bfa,#f472b6,#fbbf24,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent;
+background-size:300% 100%;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:300% 0}}
+.sub{text-align:center;color:#c4b5fd;margin:8px 0 26px;font-size:.95rem}
+.glass{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:22px}
+.panel{padding:18px;position:relative}
+.searchbox{display:flex;gap:10px}
+.searchbox input{flex:1;min-width:0;padding:15px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.35);color:#fff;font-size:1rem;font-family:inherit;outline:none}
+.searchbox input:focus{border-color:#f472b6;box-shadow:0 0 0 3px rgba(244,114,182,.25)}
+.go{padding:0 22px;border:none;border-radius:16px;font-weight:700;font-size:1rem;color:#fff;cursor:pointer;font-family:inherit;
+background:linear-gradient(135deg,#7c3aed,#ec4899);box-shadow:0 8px 24px rgba(236,72,153,.4)}
+.go:active{transform:scale(.96)}
+.drop{position:absolute;left:18px;right:18px;top:78px;z-index:10;background:#1a1033;border:1px solid rgba(255,255,255,.2);border-radius:16px;overflow:hidden;display:none}
+.drop div{padding:12px 16px;cursor:pointer;font-size:.92rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.drop div:hover{background:rgba(236,72,153,.25)}
+.modes{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mode{flex:1;min-width:95px;padding:10px 8px;border-radius:14px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#ddd;font-family:inherit;font-weight:600;font-size:.82rem;cursor:pointer}
+.mode.on{background:linear-gradient(135deg,#06b6d4,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(6,182,212,.35)}
+.quick{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.8rem;color:#c4b5fd}
+.chip{padding:6px 13px;border-radius:999px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:#fde68a;cursor:pointer;font-size:.8rem}
+.chip:hover{background:rgba(251,191,36,.3)}
+#title{margin:30px 4px 14px;font-size:1.2rem;font-weight:700;display:none}
+#title span{color:#f472b6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+.card{border-radius:20px;overflow:hidden;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);animation:pop .5s both;transition:transform .2s}
+.card:hover{transform:translateY(-6px)}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
+.banner{height:105px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative}
+.rank{position:absolute;top:8px;left:10px;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:999px;font-size:.75rem;font-weight:700}
+.info{padding:12px}
+.mt{font-weight:600;font-size:.88rem;line-height:1.25;min-height:2.2em}
+.yr{color:#a1a1aa;font-size:.74rem;margin:3px 0 8px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+.tag{font-size:.64rem;padding:2px 8px;border-radius:999px;font-weight:600;color:#fff}
+.rt{font-size:.8rem;color:#fbbf24;font-weight:600;margin-bottom:7px}
+.bar{height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6)}
+.sc{font-size:.7rem;color:#c4b5fd;margin-top:4px;text-align:right}
+.msg{text-align:center;color:#fca5a5;margin-top:20px}
+.loader{display:none;margin:30px auto;width:44px;height:44px;border-radius:50%;border:5px solid rgba(255,255,255,.15);border-top-color:#f472b6;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="wrap">
+  <h1>🎬 CineMatch AI</h1>
+  <p class="sub">Hybrid movie recommender • Collaborative + Content-based</p>
+
+  <div class="glass panel">
+    <div class="searchbox">
+      <input id="q" placeholder="Type a movie name..." autocomplete="off">
+      <button class="go" onclick="go()">Find</button>
+    </div>
+    <div class="drop" id="drop"></div>
+    <div class="modes">
+      <button class="mode on" data-m="hybrid">🔥 Hybrid</button>
+      <button class="mode" data-m="cf">👥 Collaborative</button>
+      <button class="mode" data-m="content">🎭 Content</button>
+    </div>
+    <div class="quick"><span>Try:</span>
+      <span class="chip">Toy Story</span><span class="chip">Matrix</span>
+      <span class="chip">Titanic</span><span class="chip">Dark Knight</span>
+      <span class="chip">Inception</span>
+    </div>
+  </div>
+
+  <div id="title"></div>
+  <div class="loader" id="loader"></div>
+  <div class="grid" id="grid"></div>
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const PAL = {
+ "Action":["#ef4444","#f97316","💥"],"Adventure":["#f59e0b","#eab308","🧭"],
+ "Animation":["#06b6d4","#3b82f6","🎨"],"Children":["#ec4899","#f59e0b","🧸"],
+ "Comedy":["#facc15","#fb923c","😂"],"Crime":["#64748b","#334155","🔫"],
+ "Documentary":["#14b8a6","#0ea5e9","🎥"],"Drama":["#8b5cf6","#6366f1","🎭"],
+ "Fantasy":["#a855f7","#ec4899","🧙"],"Film-Noir":["#475569","#0f172a","🕵️"],
+ "Horror":["#7f1d1d","#be123c","👻"],"IMAX":["#0ea5e9","#6366f1","📽️"],
+ "Musical":["#d946ef","#f43f5e","🎵"],"Mystery":["#4f46e5","#7c3aed","🔍"],
+ "Romance":["#f43f5e","#fb7185","💖"],"Sci-Fi":["#06b6d4","#8b5cf6","🚀"],
+ "Thriller":["#dc2626","#7c3aed","😱"],"War":["#65a30d","#365314","🪖"],
+ "Western":["#d97706","#92400e","🤠"]
+};
+const DEF = ["#6366f1","#ec4899","🎞️"];
+let mode = "hybrid", picked = null, timer;
+
+const esc = t => String(t).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+document.querySelectorAll(".mode").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".mode").forEach(x => x.classList.remove("on"));
+  b.classList.add("on"); mode = b.dataset.m;
+  if (picked) recommend();
+});
+
+document.querySelectorAll(".chip").forEach(c => c.onclick = async () => {
+  $("#q").value = c.textContent;
+  const r = await (await fetch("/search?q=" + encodeURIComponent(c.textContent))).json();
+  if (r.length) { picked = r[0]; $("#q").value = r[0].title; recommend(); }
+});
+
+$("#q").addEventListener("input", () => {
+  clearTimeout(timer); picked = null;
+  const v = $("#q").value.trim();
+  if (v.length < 2) { $("#drop").style.display = "none"; return; }
+  timer = setTimeout(async () => {
+    const r = await (await fetch("/search?q=" + encodeURIComponent(v))).json();
+    const d = $("#drop");
+    d.innerHTML = "";
+    r.forEach(m => {
+      const el = document.createElement("div");
+      el.textContent = m.title;
+      el.onclick = () => { picked = m; $("#q").value = m.title; d.style.display = "none"; recommend(); };
+      d.appendChild(el);
+    });
+    d.style.display = r.length ? "block" : "none";
+  }, 250);
+});
+
+async function go() {
+  const v = $("#q").value.trim();
+  if (!picked && v.length >= 2) {
+    const r = await (await fetch("/search?q=" + encodeURIComponent(v))).json();
+    if (r.length) picked = r[0];
+  }
+  $("#drop").style.display = "none";
+  if (picked) recommend(); else $("#msg").textContent = "Movie not found. Try another name.";
+}
+
+async function recommend() {
+  $("#msg").textContent = ""; $("#grid").innerHTML = ""; $("#title").style.display = "none";
+  $("#loader").style.display = "block";
+  try {
+    const res = await fetch(`/recommend?movie_id=${picked.id}&mode=${mode}&n=10`);
+    const data = await res.json();
+    $("#loader").style.display = "none";
+    if (!res.ok) { $("#msg").textContent = data.detail; return; }
+    $("#title").innerHTML = `Because you liked <span>${esc(data.movie)}</span>`;
+    $("#title").style.display = "block";
+    $("#grid").innerHTML = data.results.map((m, i) => card(m, i)).join("");
+    window.scrollTo({top: $("#title").offsetTop - 20, behavior: "smooth"});
+  } catch (e) {
+    $("#loader").style.display = "none";
+    $("#msg").textContent = "Server error. Please try again.";
+  }
+}
+
+function card(m, i) {
+  const g = m.genres.split("|");
+  const p = PAL[g[0]] || DEF;
+  const tags = g.slice(0, 3).map(x => {
+    const c = (PAL[x] || DEF)[0];
+    return `<span class="tag" style="background:${c}">${esc(x)}</span>`;
+  }).join("");
+  const pct = Math.max(0, Math.min(100, Math.round(m.score * 100)));
+  return `<div class="card" style="animation-delay:${i * 70}ms">
+    <div class="banner" style="background:linear-gradient(135deg,${p[0]},${p[1]})">
+      <span class="rank">#${i + 1}</span>${p[2]}
+    </div>
+    <div class="info">
+      <div class="mt">${esc(m.title)}</div>
+      <div class="yr">${m.year || ""}</div>
+      <div class="tags">${tags}</div>
+      <div class="rt">⭐ ${m.avg_rating.toFixed(1)} <span style="color:#a1a1aa;font-weight:400">(${m.num_ratings})</span></div>
+      <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="sc">${pct}% match</div>
+    </div></div>`;
+}
+
+$("#q").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+</script>
+</body>
+</html>
