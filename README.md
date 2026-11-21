@@ -7,13 +7,13 @@ aurora-glass UI.
 ## Screenshots
 
 <p align="center">
-  <img src="screen1.png" width="30%" alt="Toy Story recommendations">
-  <img src="screen2.png" width="30%" alt="Matrix recommendations">
-  <img src="screen3.png" width="30%" alt="Titanic recommendations">
+  <img src="Screen1.png" width="30%" alt="Toy Story recommendations">
+  <img src="Screen2.png" width="30%" alt="Matrix recommendations">
+  <img src="Screen3.png" width="30%" alt="Titanic recommendations">
 </p>
 <p align="center">
-  <img src="screen4.png" width="30%" alt="Dark Knight recommendations">
-  <img src="screen5.png" width="30%" alt="Inception recommendations">
+  <img src="Screen4.png" width="30%" alt="Dark Knight recommendations">
+  <img src="Screen5.png" width="30%" alt="Inception recommendations">
 </p>
 
 
