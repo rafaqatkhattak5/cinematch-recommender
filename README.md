@@ -3,6 +3,7 @@
 A movie recommendation system that combines **collaborative filtering** (user behavior)
 and **content-based filtering** (genres), served with **FastAPI** and a colorful
 aurora-glass UI.
+
 ## Screenshots
 
 <p align="center">
@@ -14,6 +15,8 @@ aurora-glass UI.
   <img src="screen4.png" width="30%" alt="Dark Knight recommendations">
   <img src="screen5.png" width="30%" alt="Inception recommendations">
 </p>
+
+
 
 
 ## Features
